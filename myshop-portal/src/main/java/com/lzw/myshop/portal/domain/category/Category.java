@@ -1,7 +1,9 @@
 package com.lzw.myshop.portal.domain.category;
 
 import com.lzw.myshop.portal.domain.category.command.CategoryCreateCommand;
+import com.lzw.myshop.portal.domain.category.command.CategoryUpdateCommand;
 import com.lzw.myshop.portal.domain.category.event.CategoryCreatedEvent;
+import com.lzw.myshop.portal.domain.category.event.CategoryUpdatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -29,6 +31,9 @@ public class Category {
 
 	private Date updateTime;
 
+	public Category() {
+	}
+
 	@CommandHandler
 	public Category(CategoryCreateCommand command) {
 		apply(new CategoryCreatedEvent(command.getId(), command.getParentId(), command.getName(), command.getStatus(),
@@ -43,6 +48,22 @@ public class Category {
 		this.status = event.getStatus();
 		this.sortOrder = event.getSortOrder();
 		this.createTime = event.getUpdateTime();
+		this.updateTime = event.getUpdateTime();
+	}
+
+	@CommandHandler
+	public void handle(CategoryUpdateCommand command) {
+		Date dateNow = new Date();
+		apply(new CategoryUpdatedEvent(command.getId(), command.getParentId(), command.getName(), command.getStatus(),
+				command.getSortOrder(), dateNow));
+	}
+
+	@EventSourcingHandler
+	public void on(CategoryUpdatedEvent event) {
+		this.parentId = event.getParentId();
+		this.name = event.getName();
+		this.status = event.getStatus();
+		this.sortOrder = event.getSortOrder();
 		this.updateTime = event.getUpdateTime();
 	}
 

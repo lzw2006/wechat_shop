@@ -1,8 +1,6 @@
 package com.lzw.myshop.portal.ui.rest.category.dto;
 
-import java.util.Date;
-
-public class CategoryCreateDto {
+public class CategoryUpdateDto {
 
 	private Integer id;
 

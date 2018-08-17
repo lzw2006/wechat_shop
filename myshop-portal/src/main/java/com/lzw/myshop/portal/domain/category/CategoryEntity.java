@@ -22,6 +22,9 @@ public class CategoryEntity {
 
 	private Date updateTime;
 
+	public CategoryEntity() {
+	}
+
 	public CategoryEntity(Integer id, Integer parentId, String name, Integer status, Integer sortOrder, Date createTime,
 			Date updateTime) {
 		this.id = id;
