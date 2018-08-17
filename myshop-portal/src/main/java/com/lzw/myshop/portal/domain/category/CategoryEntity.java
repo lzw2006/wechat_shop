@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
 
-@Entity
+@Entity(name = "tb_category")
 public class CategoryEntity {
 
 	@Id
@@ -21,6 +21,17 @@ public class CategoryEntity {
 	private Date createTime;
 
 	private Date updateTime;
+
+	public CategoryEntity(Integer id, Integer parentId, String name, Integer status, Integer sortOrder, Date createTime,
+			Date updateTime) {
+		this.id = id;
+		this.parentId = parentId;
+		this.name = name;
+		this.status = status;
+		this.sortOrder = sortOrder;
+		this.createTime = createTime;
+		this.updateTime = updateTime;
+	}
 
 	public Integer getId() {
 		return id;
