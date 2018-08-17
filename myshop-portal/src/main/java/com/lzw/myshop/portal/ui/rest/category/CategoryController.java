@@ -3,6 +3,7 @@ package com.lzw.myshop.portal.ui.rest.category;
 import com.lzw.myshop.portal.domain.category.CategoryEntity;
 import com.lzw.myshop.portal.domain.category.CategoryEntityRepository;
 import com.lzw.myshop.portal.domain.category.command.CategoryCreateCommand;
+import com.lzw.myshop.portal.domain.category.command.CategoryDisableCommand;
 import com.lzw.myshop.portal.domain.category.command.CategoryUpdateCommand;
 import com.lzw.myshop.portal.ui.rest.category.dto.CategoryCreateDto;
 import com.lzw.myshop.portal.ui.rest.category.dto.CategoryUpdateDto;
@@ -53,5 +54,12 @@ public class CategoryController {
 				categoryUpdateDto.getParentId(), categoryUpdateDto.getName(), categoryUpdateDto.getStatus(),
 				categoryUpdateDto.getSortOrder(), dateNow);
 		return commandGateway.send(categoryUpdateCommand);
+	}
+
+	@DeleteMapping("/{categoryId}")
+	public CompletableFuture<Object> deleteCategory(@PathVariable Integer categoryId) {
+		Date dateNow = new Date();
+		CategoryDisableCommand categoryDisableCommand = new CategoryDisableCommand(categoryId, dateNow);
+		return commandGateway.send(categoryDisableCommand);
 	}
 }

@@ -1,8 +1,10 @@
 package com.lzw.myshop.portal.domain.category;
 
 import com.lzw.myshop.portal.domain.category.command.CategoryCreateCommand;
+import com.lzw.myshop.portal.domain.category.command.CategoryDisableCommand;
 import com.lzw.myshop.portal.domain.category.command.CategoryUpdateCommand;
 import com.lzw.myshop.portal.domain.category.event.CategoryCreatedEvent;
+import com.lzw.myshop.portal.domain.category.event.CategoryDisabledEvent;
 import com.lzw.myshop.portal.domain.category.event.CategoryUpdatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
@@ -65,6 +67,17 @@ public class Category {
 		this.status = event.getStatus();
 		this.sortOrder = event.getSortOrder();
 		this.updateTime = event.getUpdateTime();
+	}
+
+	@CommandHandler
+	public void handle(CategoryDisableCommand command) {
+		Date dateNow = new Date();
+		apply(new CategoryDisabledEvent(command.getId(), dateNow));
+	}
+
+	@EventSourcingHandler
+	public void on(CategoryDisabledEvent event) {
+		this.status = 0;
 	}
 
 	public Integer getId() {

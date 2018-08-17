@@ -3,6 +3,7 @@ package com.lzw.myshop.portal.domain.category.query;
 import com.lzw.myshop.portal.domain.category.CategoryEntity;
 import com.lzw.myshop.portal.domain.category.CategoryEntityRepository;
 import com.lzw.myshop.portal.domain.category.event.CategoryCreatedEvent;
+import com.lzw.myshop.portal.domain.category.event.CategoryDisabledEvent;
 import com.lzw.myshop.portal.domain.category.event.CategoryUpdatedEvent;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +33,8 @@ public class CategoryProjector {
 		categoryEntityRepository.save(categoryEntity);
 	}
 
+	@EventHandler
+	public void on(CategoryDisabledEvent event) {
+		categoryEntityRepository.delete(event.getId());
+	}
 }
