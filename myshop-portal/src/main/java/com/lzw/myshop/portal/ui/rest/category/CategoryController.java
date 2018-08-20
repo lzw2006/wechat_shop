@@ -74,4 +74,10 @@ public class CategoryController {
 		List<CategoryEntity> categoryEntityList = categoryService.getChildParallelCategoryByParentId(categoryId);
 		return ResponseEntity.ok(categoryEntityList);
 	}
+
+	@GetMapping("/childrenDeepParallelCategory/{categoryId}")
+	public ResponseEntity getChildrenDeepParallelCategory(@PathVariable Integer categoryId) {
+		List<CategoryService.CategoryItem> categoryEntityList = categoryService.getChildrenDeepParallelCategoryByParentId(categoryId);
+		return ResponseEntity.ok(categoryEntityList);
+	}
 }
