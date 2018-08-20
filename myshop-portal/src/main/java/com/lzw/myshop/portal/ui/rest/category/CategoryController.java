@@ -1,5 +1,6 @@
 package com.lzw.myshop.portal.ui.rest.category;
 
+import com.lzw.myshop.portal.app.service.category.CategoryService;
 import com.lzw.myshop.portal.domain.category.CategoryEntity;
 import com.lzw.myshop.portal.domain.category.CategoryEntityRepository;
 import com.lzw.myshop.portal.domain.category.command.CategoryCreateCommand;
@@ -11,9 +12,11 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -32,6 +35,9 @@ public class CategoryController {
 
 	@Autowired
 	private CategoryEntityRepository categoryEntityRepository;
+
+	@Autowired
+	private CategoryService categoryService;
 
 	@GetMapping("/{categoryId}")
 	public CategoryEntity getCategoryById(@PathVariable Integer categoryId) {
@@ -61,5 +67,11 @@ public class CategoryController {
 		Date dateNow = new Date();
 		CategoryDisableCommand categoryDisableCommand = new CategoryDisableCommand(categoryId, dateNow);
 		return commandGateway.send(categoryDisableCommand);
+	}
+
+	@GetMapping("/childParallelCategory/{categoryId}")
+	public ResponseEntity getChildrenParallelCategory(@PathVariable Integer categoryId) {
+		List<CategoryEntity> categoryEntityList = categoryService.getChildParallelCategoryByParentId(categoryId);
+		return ResponseEntity.ok(categoryEntityList);
 	}
 }
